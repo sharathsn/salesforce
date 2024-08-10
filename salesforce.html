@@ -9,76 +9,7 @@
     <h1>Salesforce Account Data</h1>
     <ul id="accountList"></ul>
 
-    <!--<script src="salesforce.js"></script>   Link to your JS file -->
     
-     <script>
-        async function getAccessToken() {
-            const clientId = '3MVG9fe4g9fhX0E5yoaturQHmGoBW0Caq_1SzVuujI1dpAvaGbc3_1e9CS2_F0G7IH1qJcUfubR22kmOHAOe6';
-            const clientSecret = 'F2865DDA4A3D1C31110393874B183B09900B2945CF8DE565AA4E2C3B42FE2688';
-            const username = 'sharathsn@gmail.com';
-            const password = 'Chandru$1234' + 'WMkrWpmvLah9r72ySb9nMaLn';
-            const authUrl = 'https://login.salesforce.com/services/oauth2/token';
-        
-            const body = new URLSearchParams({
-                grant_type: 'password',
-                client_id: clientId,
-                client_secret: clientSecret,
-                username: username,
-                password: password
-            });
-        
-            try {
-                const response = await fetch(authUrl, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                    },
-                    body: body
-                });
-        
-                const data = await response.json();
-                return data.access_token;
-            } catch (error) {
-                console.error('Error fetching access token:', error);
-            }
-        }
-        
-        
-        async function fetchAccountData() {
-            const accessToken = await getAccessToken();
-            const instanceUrl = 'https://sharathshetty-dev-ed.my.salesforce.com/';  // Replace with your Salesforce instance URL
-            const accountsUrl = `${instanceUrl}/services/data/v52.0/query?q=SELECT+Id,Name+FROM+Account+LIMIT+10`;
-        
-            try {
-                const response = await fetch(accountsUrl, {
-                    method: 'GET',
-                    mode: 'no-cors',
-                    headers: {
-                        'Authorization': `Bearer ${accessToken}`,
-                        'Content-Type': 'application/json'
-                    }
-                });
-        
-                const data = await response.json();
-                console.log(data.records);  // Array of Account records
-                displayAccounts(data.records);
-            } catch (error) {
-                console.error('Error fetching accounts:', error);
-            }
-        }
-        
-        function displayAccounts(accounts) {
-            const accountList = document.getElementById('accountList');
-            accounts.forEach(account => {
-                const listItem = document.createElement('li');
-                listItem.textContent = account.Name;
-                accountList.appendChild(listItem);
-            });
-        }
-        
-        fetchAccountData();
-        
-    </script>
     
 </body>
 </html>
